@@ -6,7 +6,7 @@ import axios from 'axios';
  */
 const axiosAPI = () => {
     return axios.create({
-        baseURL: process.env.SERVER_PATH+":"+process.env.SERVER_PORT,
+        baseURL: `${process.env.SERVER_HOST}:${process.env.SERVER_PORT}`,
         withCredentials: true,
         headers: {
             'Accept': 'application/json',

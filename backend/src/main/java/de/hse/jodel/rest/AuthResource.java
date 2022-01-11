@@ -85,7 +85,9 @@ public class AuthResource {
     public Response logout() {
         LOGGER.debug("Logout is entered");
 
-        return authController.logout(request.getCookie("jodel-session").getValue());
+        io.vertx.core.http.Cookie cookie = request.getCookie("jodel-session");
+        String token = (cookie != null) ? cookie.getValue() : null;
+        return authController.logout(token);
     }
 
 

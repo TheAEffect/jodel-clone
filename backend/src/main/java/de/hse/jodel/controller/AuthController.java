@@ -36,12 +36,11 @@ public class AuthController {
      * @return NewCookie
      */
     public NewCookie buildResponseCookie(String token, int maxAge) {
-
         return new NewCookie(
                 "jodel-session",
                 token,
                 "/",
-                "localhost",
+                null,
                 "",
                 maxAge,
                 false,
@@ -67,7 +66,7 @@ public class AuthController {
             return Response.status(Response.Status.OK).cookie(buildResponseCookie(session.token)).entity(user).build();
         }
 
-        return Response.status(Response.Status.BAD_REQUEST).entity("Email oder Passwort falsch").build();
+        return Response.status(Response.Status.UNAUTHORIZED).entity("Email oder Passwort falsch").build();
     }
 
     /**
@@ -77,11 +76,13 @@ public class AuthController {
      * @return Response
      */
     public Response logout(String token) {
-        try {
-            sessionController.removeSession(token);
-        } catch (Exception exception) {
-            LOGGER.error(exception.getStackTrace());
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        if (token != null) {
+            try {
+                sessionController.removeSession(token);
+            } catch (Exception exception) {
+                LOGGER.error("Logout failed", exception);
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            }
         }
 
         return Response.status(Response.Status.OK).cookie(buildResponseCookie(token, 0)).entity("Logout successful").build();
