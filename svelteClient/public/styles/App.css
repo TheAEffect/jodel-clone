@@ -1,0 +1,1052 @@
+@import "header.css";
+/*@import "profile.css";
+@import "modal.css";*/
+
+.container {
+    max-width: 800px;
+    padding: 0;
+}
+
+.container.posts > .container {
+    margin: 0;
+    padding: 0;
+}
+
+
+:root {
+    --primary-color: #fff;
+    --secondary-color: #01b4e4;
+    --tertiary-color: #90cea1;
+    margin:0;
+    padding:0;
+    --mdc-theme-primary: #ff3e00;
+    --mdc-theme-secondary: #676778;
+    --mdc-theme-background: #fff;
+    --mdc-theme-surface: #fff;
+    --mdc-theme-error: #b71c1c;
+    --mdc-theme-on-primary: #fff;
+    --mdc-theme-on-secondary: #fff;
+    --mdc-theme-on-surface: #000;
+    --mdc-theme-on-error: #fff;
+    --mdc-theme-text-primary-on-background: rgba(0, 0, 0, 0.87);
+    --mdc-theme-text-secondary-on-background: rgba(0, 0, 0, 0.54);
+    --mdc-theme-text-hint-on-background: rgba(0, 0, 0, 0.38);
+    --mdc-theme-text-disabled-on-background: rgba(0, 0, 0, 0.38);
+    --mdc-theme-text-icon-on-background: rgba(0, 0, 0, 0.38);
+    --mdc-theme-text-primary-on-light: rgba(0, 0, 0, 0.87);
+    --mdc-theme-text-secondary-on-light: rgba(0, 0, 0, 0.54);
+    --mdc-theme-text-hint-on-light: rgba(0, 0, 0, 0.38);
+    --mdc-theme-text-disabled-on-light: rgba(0, 0, 0, 0.38);
+    --mdc-theme-text-icon-on-light: rgba(0, 0, 0, 0.38);
+    --mdc-theme-text-primary-on-dark: white;
+    --mdc-theme-text-secondary-on-dark: rgba(255, 255, 255, 0.7);
+    --mdc-theme-text-hint-on-dark: rgba(255, 255, 255, 0.5);
+    --mdc-theme-text-disabled-on-dark: rgba(255, 255, 255, 0.5);
+    --mdc-theme-text-icon-on-dark: rgba(255, 255, 255, 0.5);
+}
+
+#jodel-main {
+    padding: 0;
+}
+
+.navbar {
+    padding:0;
+}
+
+.navbar-collapse {
+    flex-basis: unset;
+}
+
+.jodel-page-header {
+    text-align: center;
+    color: var(--primary-color);
+}
+
+.jodel-card-style {
+    border-radius: 8px;
+    min-height: 50px;
+}
+
+.jodel-card-style.img {
+    backdrop-filter: blur(5px);
+}
+
+/*
+.jodel-card-style.img {
+    backdrop-filter: blur(5px);
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    width: 100%;
+}
+ */
+
+
+#jodel-home .logo {
+    height: 70px;
+}
+
+.jodel-topBar-White {
+    position: fixed;
+    top: 70px;
+    width: 100%;
+    height: 10px;
+    background: #fff;
+}
+
+.jodel-bottomBar-White {
+    position: fixed;
+    bottom: 40px;
+    width: 100%;
+    height: 10px;
+    background: #fff;
+    margin-left: -16px;
+}
+
+#jodel-footer {
+    min-height: 30px;
+    position: fixed;
+    bottom:0;
+    color: #000;
+    background: #fff;
+    text-align: right;
+}
+
+#jodel-header {
+    background-color: var(--primary-color);
+    color: #FFF;
+    height: 5em;
+}
+
+.nav-link {
+    font-size: 1.5rem;
+    text-align: center;
+    min-width: 100px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+#jodel-home {
+    margin-left: 1rem;
+    font-size: 2.5rem;
+}
+
+.navbar-toggler {
+    margin-right: 1rem;
+}
+
+.dropdown-menu {
+    padding: 0;
+    border-radius: unset;
+    border: none;
+}
+
+.dropdown-divider {
+    border-color: #FFF;
+}
+
+.dropdown-item {
+    text-align: center;
+    font-size: 1.5rem;
+    line-height: 2.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.dropdown-item:active, .dropdown-item.active {
+    background-color: var(--secondary-color);
+    color: #FFF;
+}
+
+#jodel-nav-button {
+    margin: 0 auto;
+    width: 100%;
+    border-radius: unset;
+    background-color: var(--primary-color);
+    border: none;
+    font-size: 1.5rem;
+    box-shadow: unset;
+}
+
+.modal-header {
+    background-color: var(--primary-color);
+    color: #FFF;
+}
+
+.form-label {
+    margin-top: 0.5rem;
+    color: #000000;
+    font-weight: bolder;
+}
+
+
+.btn-primary:hover {
+    background-color: var(--secondary-color);
+}
+
+
+
+.btn-outline-primary:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+#jodel-spinner {
+    position: absolute;
+    top: calc(100vh / 2);
+    left: calc(100vw / 2 - 2rem);
+    width: 4rem;
+    height: 4rem;
+    border-width: 0.35em;
+}
+
+@media (min-width: 992px) {
+}
+
+/***BAR**/
+
+.top .jodel-post-arrow-icon {
+    margin-left:20px;
+    margin-top:5px;
+    color:#000;
+}
+
+.top .jodel-post-arrow-icon:hover {
+    transform-origin: right center;
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.top {
+    position: fixed;
+    top:5em;
+    left: 0;
+    padding:0;
+    padding-top: 0.5em;
+    background: #fff;
+    z-index: 11;
+    background: #fff;
+}
+
+.top .top-selectable:nth-child(odd) {
+    width:100%;
+    height:100%;
+    line-height: 48px;
+    text-align:center;
+}
+
+
+.top .top-selectable:nth-child(2) {
+    width:150%;
+    height:100%;
+    line-height: 48px;
+    text-align:center;
+}
+
+.top .top-selectable:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+}
+
+.top .top-selected {
+    border-bottom:3px solid;
+}
+
+.top .top-selected:hover {
+    border-bottom:3px solid;
+    transform: none;
+}
+
+.top .not-valid {
+    color:#ddd;
+    font-weight: bold;
+    margin-right:2em
+}
+
+.top .valid {
+    color:#000;
+    font-weight: bold;
+    margin-right:2em
+}
+
+.top .valid:hover {
+    cursor: pointer;
+}
+
+
+.top > div {
+    background: #fff;
+    height:3em;
+    z-index: 3;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    box-shadow: 0px 0px 5px 0px #bfbfbf;
+    justify-content: space-between;
+}
+
+.bottom > div{
+    background: #fff;
+    height:3em;
+    z-index: 3;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    box-shadow: 0px 0px 5px 0px #bfbfbf;
+    justify-content: space-between;
+}
+
+.bottom {
+    position: fixed;
+    left: 0;
+    padding:0;
+    bottom:0;
+    background: #fff;
+    z-index: 11;
+}
+
+.bottom .sort-posts:hover {
+    cursor: pointer;
+}
+
+@media only screen and (min-width: 820px) {
+    .bottom {
+        padding-bottom: 0.5em;
+    }
+
+    .bottom > div{
+        border-radius: 0 0 8px 8px;
+    }
+
+    .top > div {
+        border-radius: 8px 8px 0 0;
+    }
+}
+
+.bottom > div div {
+    text-align: center;
+    width: 100%;
+    color: #c0c0c0;
+}
+
+.bottom > div .post-settings {
+    text-align: center;
+    justify-content: end;
+    width: unset;
+    color: #c0c0c0;
+}
+
+
+.scale .container div:hover svg {
+    transform: scale(1.1);
+}
+
+
+/******POSTLIST******/
+
+body, html {
+    height: 100%;
+}
+.main {
+    padding-top:8.5em;
+    padding-bottom:3.5em;
+    min-height: 100%;
+}
+
+@media only screen and (min-width: 820px) {
+    .main {
+        box-shadow: 0px 0px 5px 0px #bfbfbf;
+    }
+}
+
+.item {
+    margin:10px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.item:hover {
+    cursor: pointer;
+    transform: scale(1.005);
+}
+
+.jodel-post {
+    padding: 10px;
+    color: #fff;
+}
+
+.jodel-post.img .grid {
+    display: flex;
+    flex-flow: unset;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.jodel-post .small {
+ font-size: 0.6em;
+}
+
+.jodel-post .small .fa-icon{
+    height: 10px;
+}
+
+.jodel-post .vertical {
+    line-height: 0.6em;
+    vertical-align: middle;
+}
+
+.jodel-post .headerLine {
+    display: flex;
+    justify-content: space-between;
+}
+
+.jodel-post.img .headerLine {
+    padding-bottom:20px;
+}
+
+.jodel-post.img .post-bottom {
+    padding-top:20px;
+}
+
+.jodel-post .headerLine .deleteButton{
+    margin-right: 3px;
+}
+
+.jodel-post .headerLine .deleteButton:hover{
+    cursor: pointer;
+    transform: scale(1.5);
+}
+
+.container.main .grid {
+    display: flex;
+    flex-flow: unset;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.jodel-post .post-survey, .jodel-post .active-option {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.jodel-post .post-survey .post-survey-option:hover, .jodel-post .show-result:hover, .jodel-post .active-option:hover {
+    cursor: pointer;
+    transform: scale(1.01);
+}
+
+.jodel-post .post-survey-option.finished:hover {
+    cursor: unset;
+    transform: scale(1);
+}
+.jodel-post .show-result {
+    margin:20px 20px 5px 0;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+    border:2px solid rgba(255, 255, 255, 0);
+}
+
+.jodel-post .show-result svg {
+    margin:0;
+    padding:0 5px 0 0;
+    color: #fff;
+}
+
+
+.jodel-post .post-survey-option {
+    background-color:rgba(255, 255, 255, 0.5);
+    margin:5px 20px 5px 0;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: bold;
+    max-width: 100%;
+    border:2px solid rgba(255, 255, 255, 0);
+}
+
+.jodel-post .post-survey-option.finished {
+    background: none;
+    font-weight: unset;
+    border:2px solid rgba(255, 255, 255, 0.5);
+}
+
+.jodel-post .post-survey-option.finished {
+    background: none;
+    border:2px solid rgba(255, 255, 255, 0.5);
+}
+
+.jodel-post .post-survey-option.finished span{
+    padding-left: 10px;
+}
+.jodel-post .post-survey-option.finished span:nth-child(2){
+    padding-right: 10px;
+}
+
+.active-option::after {
+    content: "Tippe um abzustimmen";
+    background:none;
+    border-radius: 4px;
+    margin:5px 20px 5px 0;
+    text-align: center;
+    font-weight: bold;
+    max-width: 100%;display: block;
+    border:2px solid rgba(255, 255, 255, 0.5);
+}
+
+.active-option span {
+    display: none;
+}
+
+@media only screen and (min-width: 820px) {
+    .jodel-post .post-survey-option,
+    .jodel-post .active-option,
+    .jodel-post .show-result {
+        max-width: 50%;
+    }
+    .jodel-post .active-option::after {
+        margin:5px 0 5px 0;
+    }
+    .jodel-post .active-option {
+        margin:0;
+    }
+}
+
+.jodel-post .post-bottom {
+    display: flex;
+    justify-content: space-between;
+}
+
+.single .jodel-card-style {
+    border-radius:initial;
+    height: 100%;
+}
+
+
+.comments > div hr{
+    padding: 0;
+    margin:0;
+    border: 0.5px solid #fff;
+}
+
+/*****ADDPOST***/
+
+.icon-wrapper {
+    border: 3px solid #fff;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+
+.icon-wrapper svg {
+    height: 0.75em !important;
+    width: 0.75em !important;
+}
+
+.icon-wrapper:hover {
+    opacity: 1;
+}
+
+.flex {
+    position: fixed;
+    z-index: 1;
+    flex-flow: row wrap;
+    bottom: 4em;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+.flex:hover {
+    transform: scale(1.1) translate(-45%, 0);
+}
+
+.custom-icon {
+    cursor: pointer;
+    display: flex;
+    color: #fff;
+    font-size: 4em;
+    border-radius: 50%;
+    overflow: hidden;
+    background-size: cover;
+    position: relative;
+    padding:0.75rem;
+    background: rgba(43, 43, 44, 0.5);
+    transition: background 0.5s, color 1s, opacity 0.5s, border 0.5s;
+}
+.custom-icon::before {
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+}
+.custom-icon:hover {
+    color: #fff;
+    background: rgba(43, 43, 44, 1);
+    border-color: #fff;
+}
+
+
+/*****CREATEPOST*****/
+.main.container.create {
+    height: 100%;
+}
+
+.main.container.create .jodel-post {
+    margin:0;
+    padding: 0;
+    height: 100%;
+}
+
+.main.container.create.img{
+    background: #e6e6e6 !important;
+}
+
+.main.container.create .survey-addChoice:hover{
+    cursor: pointer;
+    transform: scale(1.025);
+}
+
+.main.container.create .jodel-post textarea::placeholder{
+    color: #ddd;
+}
+
+.main.container.create .jodel-post form {
+    height: 100%;
+}
+.main.container.create .jodel-post #jodel-text{
+    max-height: 50%;
+    min-height: 160px;
+    line-height: 25px;
+    overflow-y: auto;
+    color: #fff;
+    font-size: 1.3em;
+    margin:0;
+    padding: 20px;
+    resize: none;
+}
+
+.main.container.create .jodel-post #jodel-text:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.main.container.create .jodel-post #jodel-hashtag:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.main.container.create .bottom.transparent > div{
+    background: transparent;
+}
+
+.create .bottom .container{
+    justify-content: end;
+    overflow: hidden;
+}
+
+.create [contenteditable="true"]#jodel-textf {
+    white-space: nowrap;
+    font: 24px Arial;
+    line-height: 24px;
+    padding: 5px;
+    color:#fff;
+    min-width:100px;
+    overflow: hidden;
+}
+.create [contenteditable="true"]#jodel-textf br {
+    display:none;
+
+}
+.create [contenteditable="true"]#jodel-textf * {
+    display:inline;
+    white-space:nowrap;
+}
+
+
+.main.container.create .step2, .main.container.postlist .channels{
+    padding:10px;
+}
+
+.main.container.create .step2 .list-group, .main.container.postlist .channels .list-group{
+    box-shadow: 0px 0px 5px 0px #bfbfbf;
+    border-radius: 8px;
+    overflow: auto;
+}
+
+.main.container.create .step2 .list-group-item, .main.container.postlist .channels .list-group-item{
+    display: flex;
+    align-items: center;
+    padding:5px;
+    line-height: 1.3em;
+}
+
+.main.container.create .step2 .list-group-item:hover, .main.container.postlist .channels .list-group-item:hover{
+    cursor: pointer;
+}
+
+.main.container.create .step2 .list-group-item > div:first-child, .main.container.postlist .channels .list-group-item > div:first-child{
+    padding:10px
+}
+
+.main.container.create .step2 .list-group-item small, .main.container.postlist .channels .list-group-item small{
+    color:#777;
+}
+
+.main.container.create .step2 .list-group-item:focus, .main.container.postlist .channels .list-group-item:focus{
+    outline: none;
+    box-shadow: none;
+}
+
+.main.container.create .step2 .bottom button, .main.container.postlist .channels .bottom button {
+    width: 100%;
+    height:100%;
+    color:#fff;
+    opacity: 0.5;
+    border: none;
+    border-radius: 4px;
+}
+
+.main.container.create .step2 .bottom button.active, .main.container.postlist .channels .bottom button.active {
+    opacity: 1;
+}
+
+.post-settings {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    margin-right: 1em;
+}
+
+#jodel-hashtag {
+    border: none;
+    overflow: auto;
+    color: #fff;
+    font-size: 1.3em;
+    padding: 0 20px;
+    background: none;
+    width: 100%;
+    resize: none;
+}
+
+#jodel-hashtag::placeholder {
+    color: #ddd;
+}
+
+#jodel-link {
+    border: none;
+    overflow: auto;
+    color: #fff;
+    font-size: 1.3em;
+    margin:0;
+    padding: 0;
+    background: none;
+    resize: none;
+}
+.create-link {
+    margin-left:20px;
+}
+
+.create-link > div {
+    display: flex;
+    align-items: center;
+}
+
+.create-link > div:nth-child(2) {
+    margin-left:20px;
+    font-size: 0.8em;
+    font-style: italic;
+}
+
+.create-link svg {
+    font-size:0.8em;
+    color: #ddd;
+}
+
+.create-link span.input svg {
+    font-size:0.8em;
+    color:#fff;
+}
+
+
+#jodel-link::placeholder {
+    color: #ddd;
+}
+
+#jodel-link:focus {
+    box-shadow: none;
+    outline: none;
+}
+
+.dot {
+    margin: 0 0 0 1em;
+    height: 25px;
+    font-size:1em;
+    width: 25px;
+    border: 3px solid #fff;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.greydot {
+    margin: 0 0 0 1em;
+    height: 25px;
+    width: 25px;
+    background-color: rgba(0,0,0,0.3);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+[contenteditable=true]:empty:before {
+    content: attr(placeholder);
+    pointer-events: none;
+    color: #ddd;
+    display: block; /* For Firefox */
+}
+
+.dot svg {
+    font-size:1em;
+    vertical-align: middle;
+}
+
+/******SURVEY******/
+
+.survey {
+    background-color: #fff;
+    border-radius: 4px;
+    width: 40%;
+    min-width: 190px;
+    padding: 0.25em;
+    margin-left: 1.3em;
+}
+.survey > div {
+    margin:0.25em;
+    padding: 0.25em;
+}
+
+.survey input{
+    padding:0.25em;
+    width: 100%;
+    background: #eaeaea;
+    border-radius: 4px;
+    border:none;
+}
+
+.survey div.survey-addChoice{
+    margin:0.5em;
+    color:#fff;
+    background: #b3b3b3;
+    border-radius: 4px;
+    border:none;
+}
+
+.survey span.survey-times-circle {
+    color: #b3b3b3;
+    position: absolute;
+    right: 0.75em;
+}
+
+.survey .survey-info {
+    color: #b3b3b3;
+    margin:0.5em;
+    font-size:0.75em;
+}
+
+
+/*****OVERLAYIMG****/
+
+.container.main.postlist, .container.main.singlepost {
+    position: relative;
+    overflow: hidden;
+}
+.overlayDiv.display {
+    display:block;
+}
+.overlayDiv {
+    display: none;
+    position: fixed;
+    left:0;
+    z-index: 9;
+    top:0;
+    right: 0;
+    bottom: 0;
+    padding-top: 8.5em;
+    padding-bottom:2.5em;
+    min-height: 100%;
+}
+@media only screen and (min-width: 820px) {
+    .overlayDiv {
+        padding-bottom:3.5em;
+    }
+}
+
+.overlayDiv .container{
+    background: #000;
+    overflow: hidden;
+    height: 100%;
+}
+.overlayImg {
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+.overlayDiv:hover {
+    cursor: grabbing;
+}
+
+.overlayImg::selection { background: transparent;color:inherit; }
+
+/********VOTE*******/
+
+.horizontale {
+    text-align: center;
+}
+.vote {
+    font-size:1.5em;
+    line-height: 0.5em;
+}
+
+.voteDone {
+    color: rgba(255, 255, 255, 0.5);
+    font-size:1.5em;
+    line-height: 0.5em;
+}
+
+.open-vote .vote:hover, .open-vote .voteDone:hover {
+    cursor: pointer;
+    transform: scale(1.5);
+}
+
+.voteDisabled {
+    color: rgba(255, 255, 255, 0.1);
+    font-size:1.5em;
+    line-height: 0.5em;
+}
+
+/****COMMENT******/
+.greydot.no-valid {
+    background-color: rgba(0,0,0,0.3) !important;
+}
+
+.jodel-post.jodel-comment {
+    backdrop-filter: blur(5px);
+}
+
+.jodel-comment {
+    padding:0
+}
+
+.jodel-comment .jodel-card-style {
+    padding:10px 10px 20px 10px;
+}
+
+/******LOGIN******/
+
+.loginbox.center .columns label{
+    width: 100%;
+    margin: 20px 0;
+}
+
+.loginbox .columns.margins {
+    width:80%
+}
+.buttonLeftAlign {
+    padding:0 !important;
+    margin: 20px 0 40px;
+}
+
+.buttonLeftAlign button{
+    width: 100%;
+    padding:10px 30px;
+}
+
+@media only screen and (max-width: 820px) {
+    .loginbox.center {
+        padding:50px;
+        width: 100%;
+        box-shadow: none;
+    }
+
+    .loginbox.center .columns{
+        width: 100%;
+    }
+}
+
+/******EDIT****/
+.edit {
+    margin:20px;
+    margin: 0 auto;
+    width:100%;
+}
+
+.edit label{
+    width:100%;
+}
+
+@media only screen and (min-width: 820px) {
+    .edit {
+        width:50%;
+    }
+}
+
+.location-change {
+    max-width:800px;
+    position:fixed;background: #fff;z-index:100;width:100%;min-height:100px;box-shadow: rgb(191 191 191) 0px 3px 5px 0px;
+}
+
+.location-change > div {
+    width:100%;margin:0 auto;padding:20px
+}
+
+@media only screen and (min-width: 820px) {
+    .location-change > div {
+        width:50%;margin:0 auto;padding:20px
+    }
+}
+
+.greydot svg {
+    height:13px;
+    width:13px
+}
+
+.greydot:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+    background: #333333;
+}
+
+.dot:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.headerLine svg {
+    height:10px;
+    width:10px
+}
+
+.jodel-post .headerLine .deleteButton {
+    margin-right: 0px;
+}
+
+.deleteButton svg{;
+    height:15px;
+    width:15px;
+}
+
+.deleteButton:hover svg{
+    transform: scale(1.3);
+}

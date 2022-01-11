@@ -1,0 +1,89 @@
+#jodel-header {
+    background-color: var(--primary-color);
+    color: #FFF;
+    height: 70px;
+    position: fixed;
+    top:0;
+    width:100%;
+    z-index:10;
+}
+
+#jodel-home {
+    margin-left: 1rem;
+    font-size: 2.5rem;
+    color: #FFF;
+}
+
+#jodel-header-nav-collapse {
+    z-index: 20;
+}
+
+#basic-navbar-nav {
+    display: block !important;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover, .dropdown-item:hover, #jodel-nav-button:hover, .dropdown-toggler:hover {
+    background-color: var(--secondary-color);
+    color: #FFF;
+}
+
+.nav-item {
+    background-color: var(--secondary-color);
+    color: #fff;
+}
+
+.nav-item:hover {
+    background-color: #fff !important;
+    color: #fff;
+}
+
+.dropdown-item {
+    color: #FFF;
+    text-align: center;
+    font-size: 1.5rem;
+    line-height: 2.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.dropdown-item:active, .dropdown-item.active {
+    background-color: var(--secondary-color);
+    color: #FFF;
+}
+
+.dropdown-divider {
+    border-color: #FFF;
+}
+
+.justify-content-end.navbar-nav div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+#jodel-nav-profile, #jodel-nav-logout {
+    border:none;
+}
+
+#jodel-nav-profile:visited, #jodel-nav-logout:visited {
+    border:none;
+}
+
+#jodel-nav-profile:hover {
+    background-color: rgba(0,0,0,0.2);
+}
+
+#jodel-nav-profile, #jodel-nav-logout {
+    background: #fff;
+}
+
+#jodel-nav-profile:focus, #jodel-nav-logout:focus {
+    outline: none;
+    box-shadow: unset;
+}
+
+#jodel-nav-logout:hover {
+    background-color: rgba(0,0,0,0.2);
+}
+
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+    background-color: transparent;
+}
