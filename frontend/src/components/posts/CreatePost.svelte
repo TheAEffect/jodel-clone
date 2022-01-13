@@ -200,38 +200,46 @@
         };
     }
 
+    const getOptionalType = (type) => {
+        if (type === Image || type === 'Image') return 'Image';
+        if (type === Link || type === 'Link') return 'Link';
+        if (type === Survey || type === 'Survey') return 'Survey';
+        return undefined;
+    };
+
     /**
      * Prepare to upload the data & send it afterwards
      */
     const uploadPost = () => {
-        if(steps.step1.valid && steps.step2.valid) {
-            let obj = steps.step1;
-            obj = {...obj, longitude: $storeGeo?.longitude, latitude: $storeGeo?.latitude, city: $storeGeo?.city}
-            delete obj.active;
-            if(steps.step1.optional?.type === Survey) {
-                delete obj.optional?.data?.addChoice;
-                obj.optional.data = obj.optional?.data.choices.map( function(choice) {
-                    return choice.value
-                });
-            }
+        if (!steps.step1.valid || !steps.step2.valid) return;
 
-            delete obj.valid;
+        const optType = getOptionalType(steps.step1.optional?.type);
+        let optionalData = undefined;
 
-            if(steps.step1.optional?.type !== undefined) {
-                steps.step1.optional.type = steps.step1.optional?.type?.name?.replace('_1','');
-            }
-
-            obj = {...obj, channelid:steps.step2.selected}
-
-            axiosAPI().put('/post', obj)
-                .then((res) => {
-                    if (res.status === 201) {
-                        posts = [res.data, ...posts];
-                        createPost = false;
-                    }
-                });
+        if (optType === 'Survey') {
+            optionalData = steps.step1.optional?.data?.choices?.map(choice => choice.value) || [];
+        } else if (optType) {
+            optionalData = steps.step1.optional?.data;
         }
-    }
+
+        const payload = {
+            text: steps.step1.text,
+            color: steps.step1.color,
+            hashtag: steps.step1.hashtag,
+            channelid: steps.step2.selected,
+            longitude: $storeGeo?.longitude,
+            latitude: $storeGeo?.latitude,
+            city: $storeGeo?.city,
+            optional: optType ? { type: optType, data: optionalData } : {}
+        };
+
+        axiosAPI().put('/post', payload).then((res) => {
+            if (res.status === 201) {
+                posts = [res.data, ...posts];
+                createPost = false;
+            }
+        });
+    };
 </script>
 <div class="container main create" class:img={steps.step1.optional?.type === Image} style='color:#999;background-color: {steps.step1.active? steps.step1.color : steps.step2.active? "#f5f5f5":"#ddd"}'>
     <Bar top>

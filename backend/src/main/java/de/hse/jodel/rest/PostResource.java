@@ -5,6 +5,7 @@ import de.hse.jodel.model.Post;
 import de.hse.jodel.utils.AuthUser;
 import de.hse.jodel.controller.SurveyOptionController;
 import de.hse.jodel.model.Channel;
+import de.hse.jodel.model.User;
 import de.hse.jodel.utils.exception.HttpExceptions;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
@@ -84,49 +85,67 @@ public class PostResource {
     public Response store(JsonObject data) throws HttpExceptions {
         LOGGER.debug("Create post");
 
-        if (authUser != null) {
-            Post createdPost = null;
-
-            Channel channel = Channel.findById(data.getLong("channelid"));
-            if(channel != null) {
-                //default [type=undefined]
-                if (data.getJsonObject("optional").isEmpty()) {
-                    createdPost = postController.createPost(channel, data.getString("hashtag"), data.getString("text"), data.getDouble("longitude"), data.getDouble("latitude"), data.getString("city"), data.getString("color"), authUser.getUser());
-                } else {
-                    //image [type=IMAGE]
-                    if (data.getJsonObject("optional").getString("type").equals("Image")) {
-                        String imgbase64 = data.getJsonObject("optional").getJsonObject("data").getString("value");
-                        createdPost = postController.createImagePost(channel, imgbase64, data.getDouble("longitude"), data.getDouble("latitude"), data.getString("city"), data.getString("color"), authUser.getUser());
-                        //link [type=LINK]
-                    } else if (data.getJsonObject("optional").getString("type").equals("Link")) {
-                        String link = data.getJsonObject("optional").getJsonObject("data").getString("value");
-                        createdPost = postController.createLinkPost(channel, link, data.getString("hashtag"), data.getString("text"), data.getDouble("longitude"), data.getDouble("latitude"), data.getString("city"), data.getString("color"), authUser.getUser());
-                        //link [type=SURVEY]
-                    } else if (data.getJsonObject("optional").getString("type").equals("Survey")) {
-                        JsonArray choices = data.getJsonObject("optional").getJsonArray("data");
-                        if (choices.size() < 2 || choices.size() > 4) {
-                            throw new HttpExceptions("No valid survey", Response.Status.CONFLICT);
-                        } else {
-                            createdPost = postController.createSurveyPost(channel, data.getString("hashtag"), data.getString("text"), data.getDouble("longitude"), data.getDouble("latitude"), data.getString("city"), data.getString("color"), authUser.getUser());
-                            for (Object o : choices) {
-                                surveyOptionController.createSurveyOption(createdPost.id, o.toString());
-                            }
-                        }
-                    }
-                }
-                createdPost = postController.getPost(createdPost.id, createdPost.user);
-            } else {
-                return Response.status(Response.Status.BAD_REQUEST).build();
-            }
-
-            if (createdPost == null) {
-                return Response.status(Response.Status.BAD_REQUEST).build();
-            }
-
-            return Response.status(Response.Status.CREATED).entity(createdPost).build();
-        } else {
+        if (authUser == null) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
+
+        Channel channel = Channel.findById(data.getLong("channelid"));
+        if (channel == null) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        User user = authUser.getUser();
+        Post createdPost = null;
+        JsonObject optional = data.getJsonObject("optional");
+
+        //default [type=undefined]
+        if (optional == null || optional.isEmpty()) {
+            createdPost = postController.createPost(
+                channel, data.getString("hashtag"), data.getString("text"),
+                data.getDouble("longitude"), data.getDouble("latitude"),
+                data.getString("city"), data.getString("color"), user
+            );
+        } else {
+            String type = optional.getString("type");
+            //image [type=IMAGE]
+            if ("Image".equalsIgnoreCase(type)) {
+                String imgBase64 = optional.getJsonObject("data").getString("value");
+                createdPost = postController.createImagePost(
+                    channel, imgBase64, data.getDouble("longitude"),
+                    data.getDouble("latitude"), data.getString("city"),
+                    data.getString("color"), user
+                );
+            //link [type=LINK]
+            } else if ("Link".equalsIgnoreCase(type)) {
+                String link = optional.getJsonObject("data").getString("value");
+                createdPost = postController.createLinkPost(
+                    channel, link, data.getString("hashtag"), data.getString("text"),
+                    data.getDouble("longitude"), data.getDouble("latitude"),
+                    data.getString("city"), data.getString("color"), user
+                );
+            //survey [type=SURVEY]
+            } else if ("Survey".equalsIgnoreCase(type)) {
+                JsonArray choices = optional.getJsonArray("data");
+                if (choices == null || choices.size() < 2 || choices.size() > 4) {
+                    throw new HttpExceptions("No valid survey", Response.Status.CONFLICT);
+                }
+                createdPost = postController.createSurveyPost(
+                    channel, data.getString("hashtag"), data.getString("text"),
+                    data.getDouble("longitude"), data.getDouble("latitude"),
+                    data.getString("city"), data.getString("color"), user
+                );
+                for (Object o : choices) {
+                    surveyOptionController.createSurveyOption(createdPost.id, o.toString());
+                }
+            }
+        }
+
+        if (createdPost == null) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        Post responseEntity = postController.getPost(createdPost.id, user);
+        return Response.status(Response.Status.CREATED).entity(responseEntity).build();
     }
 
     /**

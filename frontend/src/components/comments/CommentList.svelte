@@ -90,31 +90,34 @@
 	 * Prepare to upload the data & send it afterwards
 	 */
 	const uploadComment = () => {
-		if(step.valid) {
-			let obj = step;
-			obj = {...obj, longitude: $storeGeo?.longitude, latitude: $storeGeo?.latitude, city: $storeGeo?.city}
-			delete obj.valid;
+		if (!step.valid) return;
 
-			if(obj.optional?.type !== undefined) {
-				obj.optional.type = obj.optional?.type?.name.replace('_1','');
-				step.optional = {data: undefined}
-			}
-
-			if(obj.optional?.type === "Image") {
-				image.show();
-			}
-
-			axiosAPI().put(`/comment/${postId}`, obj)
-					.then(async (res) => {
-						if (res.status === 201) {
-							comments = [...comments, res.data];
-							step.text = "";
-							await tick();
-							window.scrollTo(0, document.getElementById("main").scrollHeight);
-						}
-					});
+		const isImage = step.optional?.type === Image || step.optional?.type === "Image";
+		if (isImage && image?.show) {
+			image.show();
 		}
-	}
+
+		const payload = {
+			text: step.text,
+			color: step.color,
+			longitude: $storeGeo?.longitude,
+			latitude: $storeGeo?.latitude,
+			city: $storeGeo?.city,
+			optional: isImage ? { type: "Image", data: step.optional?.data } : {}
+		};
+
+		step.optional = { data: undefined };
+
+		axiosAPI().put(`/comment/${postId}`, payload)
+				.then(async (res) => {
+					if (res.status === 201) {
+						comments = [...comments, res.data];
+						step.text = "";
+						await tick();
+						window.scrollTo(0, document.getElementById("main").scrollHeight);
+					}
+				});
+	};
 
 	/**
 	 * Deletes comment with given id
