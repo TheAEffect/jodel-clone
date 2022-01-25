@@ -117,7 +117,7 @@ public class PostController {
     public List<Post> getPosts(long channelid, String criteria, double latitude, double longitude) {
         User user = authUser.getUser();
         List<Post> posts = null;
-        List<Post> postsFiltered = new ArrayList<> ();
+        List<Post> postsFiltered;
         int oldSize = 0;
         double radius = 0.00;
         boolean changed;
@@ -155,7 +155,7 @@ public class PostController {
                     changed = true;
                 }
 
-
+                postsFiltered = new ArrayList<> ();
                 for (Post post : posts) {
                     if (post.channel.id.equals(channelid)) {
                         postsFiltered.add(post);

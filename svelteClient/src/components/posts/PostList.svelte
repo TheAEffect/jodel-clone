@@ -18,7 +18,7 @@
 
     export let posts;
     export let color;
-    export let setOrderAndFetch;
+    export let getPosts;
     export let createPost;
     let channels;
     let displayLocationChange=false;
@@ -49,6 +49,7 @@
         })
             .then(res => {
                 storeUser.set({...$storeUser, ...res.data});
+                getPosts();
             })
     }
 
@@ -107,14 +108,14 @@
             <div style="width:100%"
                  on:click={()=>{
                      storeChannel.set(undefined);
-                     setOrderAndFetch()}}>
+                     getPosts()}}>
                 <Icon class="jodel-post-arrow-icon"
                     data={faArrowLeft}/>
             </div>
             <div class="top-selectable"
                  class:top-selected={!$storeSection}
                  style="line-height:{$storeChannel.name?'24px':'48px'};color:{color};"
-                 on:click={()=>{storeSection.set(undefined)}}>
+                 on:click={()=>{storeSection.set(undefined);clickLocation()}}>
                 <Icon data={faMapMarkerAlt} /> {$storeGeo.city}
                 <br>@{$storeChannel.name}
             </div>
@@ -130,7 +131,7 @@
                                on:click={()=>{
                                    storeChannel.set({id: channel.id, name: channel.name.toLowerCase()});
                                    storeSection.set(undefined);
-                                   setOrderAndFetch();
+                                   getPosts();
                                }}
                                style={$storeChannel?.id===channel.id? `color:#fff;background-color: ${color};border-color:${color}`:
                                                                 `background-color: #fff;border-color:#fff`}>
@@ -198,7 +199,7 @@
     {/if}
     {#if $storeSection?.displayPosts}
         <Bar top>
-            <span on:click={()=>{storeSection.set(undefined);setOrderAndFetch()}}>
+            <span on:click={()=>{storeSection.set(undefined);getPosts()}}>
                 <Icon class="jodel-post-arrow-icon"
                       data={faArrowLeft}/>
             </span>
@@ -208,17 +209,17 @@
         <Bar bottom scale>
             <div class="sort-posts"
                  style="color: {!$storeOrder?color:''}"
-                 on:click={()=>{storeOrder.set(undefined);setOrderAndFetch()}}>
+                 on:click={()=>{storeOrder.set(undefined);getPosts()}}>
                 <Icon data={faClock}/>
             </div>
             <div class="sort-posts"
                  style="color:{$storeOrder===2?color:''};border-left: 1px solid #808080; border-right: 1px solid #808080"
-                 on:click={()=>{storeOrder.set(2);setOrderAndFetch()}}>
+                 on:click={()=>{storeOrder.set(2);getPosts()}}>
                 <Icon data={faCommentAlt}/>
             </div>
             <div class="sort-posts"
                  style="color:{$storeOrder===3?color:''}"
-                 on:click={()=>{storeOrder.set(3);setOrderAndFetch()}}>
+                 on:click={()=>{storeOrder.set(3);getPosts()}}>
                 <Icon data={faChevronUp}/>
             </div>
         </Bar>

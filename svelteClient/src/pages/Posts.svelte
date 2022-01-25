@@ -18,50 +18,8 @@
     }
 
     /**
-     * Load posts if geo changes
+     * Gets all posts sorted by number of date (default)
      */
-
-    $: {
-        if ($storeGeo && !loaded) {
-            loaded = true;
-            fetchPosts();
-        }
-    }
-
-    const getCommentPosts = () => {
-        let channel = $storeChannel?.id? '&channel='+$storeChannel?.id : ''
-        axiosAPI().get('/post?longitude=' + $storeGeo.longitude + '&latitude=' + $storeGeo.latitude + '&criteria=comments' + channel)
-            .then((res) => {
-                if (res.status === 200) {
-                    state.posts = res.data;
-                }
-            });
-    }
-
-    const setOrderAndFetch = () => {
-        switch ($storeOrder) {
-            case 3:
-                getPosts();
-                break;
-            case 2:
-                getPosts();
-                break;
-            default:
-                getPosts();
-                break;
-        }
-    }
-
-    const getPosts =() => {
-        if($storeOrder === 3) {
-            getVotePosts()
-        } else if($storeOrder === 2) {
-            getCommentPosts()
-        } else {
-            getPostsDefault()
-        }
-    }
-
     const getPostsDefault = () => {
         let channel = $storeChannel?.id? '&channel='+$storeChannel?.id : ''
         axiosAPI().get('/post?longitude=' + $storeGeo.longitude + '&latitude=' + $storeGeo.latitude+channel)
@@ -72,6 +30,22 @@
             });
     }
 
+    /**
+     * Gets all posts sorted by number of comments
+     */
+    const getCommentPosts = () => {
+        let channel = $storeChannel?.id? '&channel='+$storeChannel?.id : ''
+        axiosAPI().get('/post?longitude=' + $storeGeo.longitude + '&latitude=' + $storeGeo.latitude + '&criteria=comments' + channel)
+            .then((res) => {
+                if (res.status === 200) {
+                    state.posts = res.data;
+                }
+            });
+    }
+
+    /**
+     * Gets all posts sorted by votes
+     */
     const getVotePosts = () => {
         let channel = $storeChannel?.id? '&channel='+$storeChannel?.id : ''
         axiosAPI().get('/post?longitude=' + $storeGeo.longitude + '&latitude=' + $storeGeo.latitude + '&criteria=votes'+channel)
@@ -82,6 +56,9 @@
             });
     }
 
+    /**
+     * Fetches one post at singlePost, otherwise all posts
+     */
     const fetchPosts = () => {
         if (singlePost) {
             axiosAPI().get('/post/' + id)
@@ -96,6 +73,29 @@
         }
     }
 
+    /**
+     * Calls function according to which the posts should be sorted
+     */
+    const getPosts =() => {
+        if($storeOrder === 3) {
+            getVotePosts()
+        } else if($storeOrder === 2) {
+            getCommentPosts()
+        } else {
+            getPostsDefault()
+        }
+    }
+
+    /**
+     * Load posts if geo changes
+     */
+    $: {
+        if ($storeGeo && !loaded) {
+            loaded = true;
+            fetchPosts();
+        }
+    }
+
 </script>
 {#if state.createPost}
     <CreatePost bind:createPost={state.createPost} bind:posts={state.posts} rndColor={rndColor}/>
@@ -103,7 +103,7 @@
     {#if singlePost}
         <Post post={state.posts} singlePost={singlePost}/>
     {:else}
-        <PostList bind:selected={selected} bind:posts={state.posts} bind:createPost={state.createPost} color={rndColor} setOrderAndFetch={setOrderAndFetch}/>
+        <PostList bind:selected={selected} bind:posts={state.posts} bind:createPost={state.createPost} color={rndColor} getPosts={getPosts}/>
     {/if}
 {/if}
 

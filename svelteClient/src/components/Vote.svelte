@@ -2,6 +2,7 @@
     import Icon from 'svelte-awesome';
     import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons'
     import {axiosAPI} from "../apis/AxiosQuarkus.js";
+    import {useAuth} from "../contexts/AuthContext";
 
     export let postcomment=undefined;
     export let post=undefined;
@@ -27,6 +28,7 @@
                         } else {
                             post.votingValue--;
                         }
+                        useAuth().whoAmI();
                     }
                 })
         }

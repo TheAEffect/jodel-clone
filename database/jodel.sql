@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `jodel`.`comments`
 (
     `id`           INT UNSIGNED   NOT NULL,
     `type`          ENUM ('IMAGE') NULL,
-    `text`         VARCHAR(45)     NULL,
+    `text`         VARCHAR(255)     NULL,
     `longitude`    DOUBLE NOT NULL,
     `latitude`     DOUBLE NOT NULL,
     `city`          VARCHAR(45) NOT NULL,
