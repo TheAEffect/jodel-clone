@@ -39,7 +39,7 @@
      * @type {Joi.ObjectSchema<any>}
      */
     const loginSchema = Joi.object({
-        email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['de'] } }).required(),
+        email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['de', 'com'] } }).required(),
         password: Joi.string().required()
     });
 
@@ -48,7 +48,7 @@
      * @type {Joi.ObjectSchema<any>}
      */
     const registerSchema = Joi.object({
-        email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['de'] } }).required(),
+        email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['de','com'] } }).required(),
         password: Joi.string().required(),
         passwordRepeat: Joi.string().required()
     });
@@ -246,7 +246,7 @@
     .center {
         display: flex;
         justify-content: center;
-        align-tems: center;
+        align-items: center;
     }
 
     .loginbox {
