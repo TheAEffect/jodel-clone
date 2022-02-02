@@ -1,0 +1,4 @@
+*.js linguist-language=JavaScript
+*.svelte linguist-language=Svelte
+*.java linguist-language=Java
+*.css linguist-detectable=false
