@@ -1,0 +1,60 @@
+services:
+  # MySQL Database Container
+  db:
+    image: mysql:8.0
+    container_name: jodel-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: jodel
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/jodel.sql:/docker-entrypoint-initdb.d/01-jodel.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -padmin || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+    networks:
+      - jodel-net
+
+  # Quarkus Java Backend Container
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: jodel-backend
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - ./backend/.env
+    ports:
+      - "8080:8080"
+    networks:
+      - jodel-net
+
+  # Svelte Frontend Container (Nginx)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: jodel-frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+    networks:
+      - jodel-net
+
+volumes:
+  mysql_data:
+
+networks:
+  jodel-net:
+    driver: bridge
