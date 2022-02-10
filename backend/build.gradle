@@ -1,10 +1,7 @@
-// https://quarkus.io/guides/gradle-tooling
 plugins {
     id 'java'
     id 'io.quarkus'
-	// id 'org.siouan.frontend-jdk11'
 }
-
 
 repositories {
      mavenLocal()
@@ -12,8 +9,7 @@ repositories {
 }
 
 dependencies {
-    // https://mvnrepository.com/artifact/org.mindrot/jbcrypt
-    implementation group: 'org.mindrot', name: 'jbcrypt', version: '0.4'
+    implementation 'org.mindrot:jbcrypt:0.4'
 
     implementation 'io.quarkus:quarkus-resteasy-jackson'
     implementation 'io.quarkus:quarkus-jdbc-mysql'
@@ -23,7 +19,6 @@ dependencies {
 
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'
-    testImplementation "org.mockito:mockito-core:3.+"
 }
 
 group 'de.hse.swa'
@@ -39,11 +34,11 @@ compileTestJava {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
 }
 
 test {
     systemProperty "java.util.logging.manager", "org.jboss.logmanager.LogManager"
 }
-
