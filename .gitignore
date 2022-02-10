@@ -1,0 +1,86 @@
+# ==========================================
+# Environment Variables & Secrets
+# ==========================================
+.env
+.env.*
+!.env.example
+*.local
+
+# ==========================================
+# Java & Gradle Build Artifacts
+# ==========================================
+.gradle/
+**/.gradle/
+build/
+**/build/
+bin/
+**/bin/
+out/
+**/out/
+target/
+**/target/
+*.class
+**/*.class
+*.jar
+**/*.jar
+*.war
+*.ear
+# Ensure Gradle wrapper jar is NOT ignored
+!**/gradle/wrapper/gradle-wrapper.jar
+
+# ==========================================
+# Node / Frontend Dependencies & Build Output
+# ==========================================
+node_modules/
+**/node_modules/
+svelteClient/public/build/
+**/public/build/
+.npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ==========================================
+# IDEs & Editor Configuration
+# ==========================================
+.idea/
+**/.idea/
+*.iml
+**/*.iml
+*.iws
+*.ipr
+.vscode/
+**/.vscode/
+.settings/
+**/.settings/
+.project
+**/.project
+.classpath
+**/.classpath
+*.sublime-project
+*.sublime-workspace
+
+# ==========================================
+# Operating System Files
+# ==========================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# ==========================================
+# Logs & Temporary Backup Files
+# ==========================================
+*.log
+**/*.log
+*.tmp
+*.bak
+**/*.bak
+*.swp
+*~
+database/*.bak
