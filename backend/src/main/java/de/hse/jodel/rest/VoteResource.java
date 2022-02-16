@@ -9,7 +9,6 @@ import de.hse.jodel.model.Voting;
 import de.hse.jodel.utils.AuthUser;
 import de.hse.jodel.utils.exception.HttpExceptions;
 import io.vertx.core.json.JsonObject;
-import org.jboss.logging.Logger;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
@@ -31,72 +30,87 @@ public class VoteResource {
     @Inject
     VotingController votingController;
 
-    private static final Logger LOGGER = Logger.getLogger(PostResource.class);
-
-
     /**
-     * Put a comment to the given Post ID
-     * @param data object data (postcomment, id, vote)
-     * @return Response
+     * Casts a vote on a post or comment
+     * @param data JSON object containing postcomment ("post"|"comment"), id and vote ("UP"|"DOWN")
+     * @return Response with vote details or FORBIDDEN / BAD_REQUEST
      */
     @PUT
     @RolesAllowed({"admin", "user"})
     public Response store(JsonObject data) throws HttpExceptions {
+        if (data == null) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
         String postcomment = data.getString("postcomment");
-        String vote = data.getString("vote");
-        long id = data.getLong("id");
-        LOGGER.error("Create Vote");
-        postcomment = postcomment.toLowerCase();
-        if (authUser != null) {
-            if(postcomment.equals("comment") || postcomment.equals("post")) {
-               try {
-                   if(!vote.equals("") && (Voting.TYPE.valueOf(vote.toUpperCase()).equals(Voting.TYPE.UP)
-                           || Voting.TYPE.valueOf(vote.toUpperCase()).equals(Voting.TYPE.DOWN))) {
-                       if (postcomment.equals("post")) {
-                           Post post = Post.findById(id);
-                           Object[] arr = votingController.setVoting(post, authUser.getUser(), Voting.TYPE.valueOf(vote.toUpperCase()));
-                           if((boolean) arr[0]) {
-                               User votedUser = post.user;
-                               if(Voting.TYPE.valueOf(vote.toUpperCase()).equals(Voting.TYPE.UP)) {
-                                   if(!post.user.equals(authUser.getUser())) {
-                                       userController.increaseKarma(authUser.getUser()); // voter
-                                       userController.increaseKarma(votedUser); // voted user
-                                   }
-                               } else {
-                                   if(!post.user.equals(authUser.getUser())) {
-                                       userController.decreaseKarma(authUser.getUser()); // voter
-                                       userController.decreaseKarma(votedUser); // voted user
-                                   }
-                               }
-                               return Response.status(Response.Status.OK).entity(arr[1]).build();
-                           } else {
-                               return Response.status(Response.Status.FORBIDDEN).build();
-                           }
-                       } else {
-                           Comment comment = Comment.findById(id);
-                           Object[] arr = votingController.setVoting(comment, authUser.getUser(), Voting.TYPE.valueOf(vote.toUpperCase()));
-                           if((boolean) arr[0]) {
-                               User votedUser = comment.user;
-                               if(Voting.TYPE.valueOf(vote.toUpperCase()).equals(Voting.TYPE.UP)) {
-                                   userController.increaseKarma(authUser.getUser()); // voter
-                                   userController.increaseKarma(votedUser); // voted user
-                               } else {
-                                   userController.decreaseKarma(authUser.getUser()); // voter
-                                   userController.decreaseKarma(votedUser); // voted user
-                               }
-                               return Response.status(Response.Status.OK).entity(arr[1]).build();
-                           } else {
-                               return Response.status(Response.Status.FORBIDDEN).build();
-                           }
-                       }
-                   }
-               } catch (Exception exception) {
-                   return Response.status(Response.Status.NOT_ACCEPTABLE).build();
-               }
-            }
-        } else {
+        String voteStr = data.getString("vote");
+        Long id = data.getLong("id");
+
+        if (postcomment == null || voteStr == null || id == null) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        Voting.TYPE voteType;
+        try {
+            voteType = Voting.TYPE.valueOf(voteStr.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        User currentUser = authUser != null ? authUser.getUser() : null;
+        if (currentUser == null) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
-        return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+
+        if ("post".equalsIgnoreCase(postcomment)) {
+            Post post = Post.findById(id);
+            if (post == null) {
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
+
+            JsonObject result = votingController.votePost(post, currentUser, voteType);
+            if (result == null) {
+                return Response.status(Response.Status.FORBIDDEN).build();
+            }
+
+            // Update karma (only if not voting on own post)
+            if (post.user != null && !post.user.equals(currentUser)) {
+                if (voteType == Voting.TYPE.UP) {
+                    userController.increaseKarma(currentUser);
+                    userController.increaseKarma(post.user);
+                } else {
+                    userController.decreaseKarma(currentUser);
+                    userController.decreaseKarma(post.user);
+                }
+            }
+
+            return Response.ok(result).build();
+
+        } else if ("comment".equalsIgnoreCase(postcomment)) {
+            Comment comment = Comment.findById(id);
+            if (comment == null) {
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
+
+            JsonObject result = votingController.voteComment(comment, currentUser, voteType);
+            if (result == null) {
+                return Response.status(Response.Status.FORBIDDEN).build();
+            }
+
+            // Update karma (only if not voting on own comment)
+            if (comment.user != null && !comment.user.equals(currentUser)) {
+                if (voteType == Voting.TYPE.UP) {
+                    userController.increaseKarma(currentUser);
+                    userController.increaseKarma(comment.user);
+                } else {
+                    userController.decreaseKarma(currentUser);
+                    userController.decreaseKarma(comment.user);
+                }
+            }
+
+            return Response.ok(result).build();
+        }
+
+        return Response.status(Response.Status.BAD_REQUEST).build();
     }
 }
