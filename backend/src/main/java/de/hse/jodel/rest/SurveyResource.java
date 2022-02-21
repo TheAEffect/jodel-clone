@@ -10,7 +10,6 @@ import de.hse.jodel.model.User;
 import de.hse.jodel.utils.AuthUser;
 import de.hse.jodel.utils.exception.HttpExceptions;
 import io.vertx.core.json.JsonObject;
-import org.jboss.logging.Logger;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
@@ -33,34 +32,40 @@ public class SurveyResource {
     @Inject
     PostController postController;
 
-    private static final Logger LOGGER = Logger.getLogger(PostResource.class);
-
     /**
-     * Delete a given Post id
-     * @param postId
-     * @return Response
+     * Adds a vote to a survey option for the given post
+     *
+     * @param postId post ID containing the survey
+     * @param data JSON payload with option ID ("id")
+     * @return Response with the updated Post object or error status
+     * @throws HttpExceptions if user lookup or authorization fails
      */
     @PUT
-    @Path("{id}")  //Post ID
+    @Path("{id}")
     @RolesAllowed({"admin", "user"})
     public Response addVote(@PathParam("id") Long postId, JsonObject data) throws HttpExceptions {
-        if(authUser != null) {
-            User user = authUser.getUser();
-            SurveyVote vote = SurveyVote.findVote(user, postId);
-            if(vote == null) {
-                Long optionId = data.getLong("id");
-                SurveyVote surveyVote = surveyVoteController.createSurveyVote(user, postId, optionId);
-                Post post = postController.getPost(postId, authUser.getUser());
-                if(post == null) {
-                    return Response.status(Response.Status.NOT_FOUND).build();
-                }
-                return Response.status(Response.Status.OK).entity(post).build();
-            } else {
-                return Response.status(Response.Status.FORBIDDEN).build();
-            }
-        } else {
+        User user = authUser != null ? authUser.getUser() : null;
+        if (user == null) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
+
+        if (data == null || !data.containsKey("id")) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        SurveyVote existingVote = SurveyVote.findVote(user, postId);
+        if (existingVote != null) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
+        Long optionId = data.getLong("id");
+        surveyVoteController.createSurveyVote(user, postId, optionId);
+        Post post = postController.getPost(postId, user);
+        if (post == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        
+        return Response.ok(post).build();
     }
 }
 

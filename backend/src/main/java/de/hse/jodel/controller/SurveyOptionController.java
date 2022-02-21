@@ -1,29 +1,23 @@
 package de.hse.jodel.controller;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
 
 import de.hse.jodel.model.SurveyOption;
 import org.jboss.logging.Logger;
 
-
 @ApplicationScoped
 public class SurveyOptionController {
 
+    private static final Logger LOGGER = Logger.getLogger(SurveyOptionController.class);
 
-    @Inject
-    EntityManager em;
-
-    private static final Logger LOGGER = Logger.getLogger(PostController.class);
-
-    /*
-    public List<Survey> getSurveyOptions(Long post_id) {
-        return Survey.findSurveysByPostId(post_id);
-    }
-    */
+    /**
+     * Creates a survey option for a post
+     *
+     * @param postId post ID to associate the option with
+     * @param option text description of the survey option
+     * @return the created SurveyOption or null if creation failed
+     */
     @Transactional
     public SurveyOption createSurveyOption(long postId, String option) {
         try {
@@ -31,36 +25,31 @@ public class SurveyOptionController {
             surveyOption.post_id = postId;
             surveyOption.votes = 0;
             surveyOption.option = option;
-
             surveyOption.persistAndFlush();
 
             return surveyOption;
-        } catch (PersistenceException exception) {
-            LOGGER.error("Survey creation");
-            LOGGER.error(exception.getCause());
-            LOGGER.error(exception.getMessage());
+        } catch (Exception exception) {
+            LOGGER.error("Failed to create survey option", exception);
+            return null;
         }
-
-        return null;
     }
 
     /**
+     * Increments the vote count for a survey option
      *
-     * @param optionId
-     * @return
+     * @param optionId ID of the survey option
+     * @return true if vote count was successfully incremented, else false
      */
     @Transactional
     public boolean updateVotingNumber(Long optionId) {
         SurveyOption surveyOption = SurveyOption.findById(optionId);
-        if(surveyOption != null) {
+        if (surveyOption != null) {
             try {
-                surveyOption.votes ++;
+                surveyOption.votes++;
                 surveyOption.persistAndFlush();
                 return true;
             } catch (Exception exception) {
-                LOGGER.error("Increase Voting");
-                LOGGER.error(exception.getCause());
-                LOGGER.error(exception.getMessage());
+                LOGGER.error("Failed to increase survey vote count", exception);
             }
         }
         return false;

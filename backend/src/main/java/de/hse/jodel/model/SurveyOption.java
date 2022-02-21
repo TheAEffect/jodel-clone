@@ -2,10 +2,8 @@ package de.hse.jodel.model;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
-import java.util.*;
-
+import java.util.List;
 import javax.persistence.*;
-
 
 @Entity
 @Table(name = "surveys_options")
@@ -21,35 +19,26 @@ public class SurveyOption extends PanacheEntityBase {
     @Column(name = "post_id")
     public Long post_id;
 
-    @Column(name = "`option`")
+    @Column(name = "option")
     public String option;
 
     @Column(name = "number_votes")
     public Integer votes;
 
+    /**
+     * Finds all options for a post and masks vote counts if the user has not voted yet
+     *
+     * @param postId the post ID of the survey
+     * @param user the user viewing the survey
+     * @return list of survey options with vote counts (masked as null if user has not voted)
+     */
     public static List<SurveyOption> findSurveysOfPostId(Long postId, User user) {
-        SurveyVote votes = SurveyVote.findVote(user, postId);
+        SurveyVote vote = SurveyVote.findVote(user, postId);
+        List<SurveyOption> surveys = list("post_id", postId);
 
-        //List<SurveyVotes> surveys = SurveyOption.listAll();
-
-        List<SurveyOption> surveys = SurveyOption.list("post_id", postId);
-
-        surveys.forEach(survey -> {
-            if(votes == null) {
-                survey.votes = null;
-            }
-        });
-/*
-        List<SurveyOption> surveyFiltered = new ArrayList<>();
-        for (SurveyOption survey : surveys) {
-            if (survey.post_id.equals(post_id)) {
-                //survey.survey_votes = null;
-                surveyFiltered.add(survey);
-            }
+        if (vote == null) {
+            surveys.forEach(survey -> survey.votes = null);
         }
-        return surveyFiltered;
-*/
         return surveys;
-        //return SurveyOption.list("post_id", post_id);
     }
 }
