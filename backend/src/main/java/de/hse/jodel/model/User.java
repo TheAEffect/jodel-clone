@@ -6,7 +6,6 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import javax.persistence.*;
 import java.util.Objects;
 
-
 @Entity
 @Table(name = "users")
 public class User extends PanacheEntityBase {
@@ -35,10 +34,12 @@ public class User extends PanacheEntityBase {
     @Column
     public String role;
 
-    public static User findByUsername(String username) {
-        return find("username", username).firstResult();
-    }
-
+    /**
+     * Finds a user by email address
+     *
+     * @param email user email
+     * @return User object or null if not found
+     */
     public static User findByEmail(String email) {
         return find("email", email).firstResult();
     }
@@ -47,7 +48,7 @@ public class User extends PanacheEntityBase {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-        User user = (User) obj;
+        User user = (User) obj;     
         return Objects.equals(id, user.id);
     }
 }
