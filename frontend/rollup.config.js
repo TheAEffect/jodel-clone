@@ -8,6 +8,7 @@ import preprocess from 'svelte-preprocess';
 import alias from "@rollup/plugin-alias";
 import * as path from "path";
 import replace from '@rollup/plugin-replace';
+import json from '@rollup/plugin-json';
 require('dotenv').config()
 
 const production = !process.env.ROLLUP_WATCH;
@@ -78,6 +79,7 @@ export default {
 			dedupe: ['svelte']
 		}),
 		commonjs(),
+		json(),
 
 		// In dev mode, call `npm run start` once
 		// the bundle has been generated

@@ -194,32 +194,31 @@
 </div>
 
 <style>
-    :global.btn-secondary {
+    :global(.btn-secondary) {
         color: #fff;
         background-color: var(--mdc-theme-primary) !important;
         border-color:var(--mdc-theme-primary) !important;
     }
 
-    :global.mdc-floating-label {
+    :global(.mdc-floating-label) {
         color:var(--mdc-theme-primary) !important;
     }
 
-    :global.btn-secondary:disabled {
+    :global(.btn-secondary:disabled) {
         color: #fff;
         background-color: var(--mdc-theme-primary) !important;
         border-color:var(--mdc-theme-primary) !important;
     }
 
-    :global.mdc-switch.mdc-switch--selected:enabled:active {
+    :global(.mdc-switch.mdc-switch--selected:enabled:active) {
         background: var(--mdc-theme-primary) !important;
     }
 
-    :global.mdc-switch__handle::after {
+    :global(.mdc-switch__handle::after) {
         background: var(--mdc-theme-primary) !important;
     }
 
-
-    :global.mdc-switch__track::after {
+    :global(.mdc-switch__track::after) {
         background: #e0e0e0 !important;
     }
 </style>

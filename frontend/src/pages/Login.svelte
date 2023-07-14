@@ -256,17 +256,17 @@
         box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
     }
 
-    :global.btn-secondary {
+    :global(.btn-secondary) {
         color: #fff;
         background-color: var(--mdc-theme-primary) !important;
         border-color:var(--mdc-theme-primary) !important;
     }
 
-    :global.mdc-floating-label {
+    :global(.mdc-floating-label) {
         color:var(--mdc-theme-primary) !important;
     }
 
-    :global.btn-secondary:disabled {
+    :global(.btn-secondary:disabled) {
         color: #fff;
         background-color: var(--mdc-theme-primary) !important;
         border-color:var(--mdc-theme-primary) !important;

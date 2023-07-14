@@ -17,22 +17,35 @@ export const useGeolocation = () => {
     const callPhoton = (longitude, latitude) => {
         axios.get(`https://photon.komoot.io/reverse?lon=${longitude}&lat=${latitude}`)
             .then((res) => {
-                storeGeo.set({longitude, latitude, city: res.data.features[0].properties.city});
-                //setLocation  adw({longitude, latitude, city: res.data.features[0].properties.city});
+                const city = res.data?.features?.[0]?.properties?.city || "Stuttgart";
+                storeGeo.set({longitude, latitude, city});
+            })
+            .catch(() => {
+                storeGeo.set({longitude, latitude, city: "Stuttgart"});
             });
     };
 
     /**
      * Fallback method if navigator geolocation fails or is disabled
-     * Provides the ip from first source
-     * Provides geodata from second source
+     * Provides geodata via IP lookup
      */
     const fallback = () => {
-        axios.get(`https://freegeoip.live/json/`)
+        axios.get(`https://ipwho.is/`)
             .then((res) => {
-                storeGeo.set({longitude: res.data.longitude, latitude: res.data.latitude, city: res.data.city});
+                if (res.data && res.data.success !== false) {
+                    storeGeo.set({
+                        longitude: res.data.longitude || 9.1829,
+                        latitude: res.data.latitude || 48.7758,
+                        city: res.data.city || "Stuttgart"
+                    });
+                } else {
+                    storeGeo.set({longitude: 9.1829, latitude: 48.7758, city: "Stuttgart"});
+                }
+            })
+            .catch(() => {
+                storeGeo.set({longitude: 9.1829, latitude: 48.7758, city: "Stuttgart"});
             });
-    }
+    };
 
     /**
      * Will be called only once
@@ -46,13 +59,13 @@ export const useGeolocation = () => {
             navigator.geolocation.getCurrentPosition(position => {
                 callPhoton(position.coords.longitude, position.coords.latitude);
             }, error => {
-                fallback()
-            },{
+                fallback();
+            }, {
                 timeout: 5000,
                 maximumAge: 60000
             });
         } else {
-            fallback()
+            fallback();
         }
     });
 };

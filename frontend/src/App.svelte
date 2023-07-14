@@ -3,7 +3,6 @@
     import Header from "components/Header.svelte";
     import {useAuth} from "./contexts/AuthContext";
     import {useGeolocation} from "./hooks/UseGeolocation";
-    import "smelte/src/tailwind.css" ;
     import Redirect from "components/Redirect.svelte";
     import Login from "./pages/Login.svelte";
     import Posts from "./pages/Posts.svelte";
